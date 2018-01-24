@@ -16,8 +16,6 @@ const BASE_URL = "http://api.nytimes.com/svc/news/v3/content/all/";
 module.exports = function(robot) {
 
 	robot.respond(/headlines (.*)/i, function(msg){
-		console.log(msg.match[0]);
-		console.log(msg.match[1]);
 		let section = msg.match[1];
 		if (section == "help") {
 			return helpInstructions(msg);
@@ -29,9 +27,8 @@ module.exports = function(robot) {
 		var URL = makeURL(BASE_URL,section,hours,limit,API_KEY);
 
 		nyTimesAPICall(URL,msg);
-		
-	})
-};
+	});
+}
 
 
 function makeURL(base,section,hours,limit,API_KEY) {
@@ -40,31 +37,28 @@ function makeURL(base,section,hours,limit,API_KEY) {
 }
 
 function nyTimesAPICall(URL,msg) {
-	msg.http(URL).get()(function(error,response,body) {
-			
-	data = JSON.parse(body);
-	articleData = data.results;
-	status = data.status;
-	if (status == "ERROR") {
-		return msg.send ("Error. Try hubot headlines help for help");
-	}
+	msg.http(URL).get()(function(error,response,body) {	
+		data = JSON.parse(body);
+		articleData = data.results;
+		status = data.status;
+		if (status == "ERROR") {
+			return msg.send ("Error. Try 'hubot headlines help' for help.");
+		}
 	
-	let articles = [];
+		let articles = [];
 
-	for (let i = 0; i < articleData.length; i ++) {
-		let story = articleData[i];
-		articles.push(story);
-	}
+		for (let i = 0; i < articleData.length; i ++) {
+			let story = articleData[i];
+			articles.push(story);
+		}
 
-	var newsData = "";
-	for (let i = 0; i < articles.length; i ++) {
-		let story = articles[i];
-		newsData += (story.title) + "\n\t" + JSON.stringify(story.url) + "\n";
-	}
-
-	return msg.send(newsData);
-});
-
+		var newsData = "";
+		for (let i = 0; i < articles.length; i ++) {
+			let story = articles[i];
+			newsData += (story.title) + "\n\t" + (story.url) + "\n";
+		}
+		return msg.send(newsData);
+	});
 }
 
 function helpInstructions(msg) {
@@ -76,6 +70,5 @@ function helpInstructions(msg) {
 	helpString += "\t science, food, travel, theatre, magazine, and real estate.";
 
 	return msg.send(helpString);
-
-};
+}
 
