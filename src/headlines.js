@@ -10,21 +10,17 @@
 //	headlines help - view help instructions
 
 
-const API_KEY = process.env.HUBOT_NYTIMES_API_KEY
-const BASE_URL = "http://api.nytimes.com/svc/news/v3/content/all/"
+const API_KEY = process.env.HUBOT_NYTIMES_API_KEY||null;
+const BASE_URL = "http://api.nytimes.com/svc/news/v3/content/all/";
 
 module.exports = function(robot) {
 
-	robot.respond(/headlines/i, function(msg){
-
+	robot.respond(/headlines (.*)/i, function(msg){
+		console.log(msg.match[0]);
+		console.log(msg.match[1]);
 		let section = msg.match[1];
 		if (section == "help") {
 			return helpInstructions(msg);
-		}
-
-		// return articles from all sections if no section is specified
-		if (section == null) {
-			section = "all";
 		}
 
 		const hours = 24;		// number of hours to look back
@@ -74,11 +70,10 @@ function nyTimesAPICall(URL,msg) {
 function helpInstructions(msg) {
 	var helpString = "";
 	helpString += "The headlines hubot retrieves the 5 most recent headlines from the New York Times. \n";
-
-	helpString += "\t For all categories, type 'hubot headlines'. \n";
+	helpString += "\t For all categories, type 'hubot headlines all'. \n";
 	helpString += "\t To get headlines for a particular section, enter 'hubot headlines section'. \n";
 	helpString += "\t Allowed sections are u.s., world, business, arts, sports, politics, tech, opinion, \n";
-	helpString += "\t science, food, travel, and real estate.";
+	helpString += "\t science, food, travel, theatre, magazine, and real estate.";
 
 	return msg.send(helpString);
 
