@@ -1,9 +1,10 @@
+
 Helper = require('hubot-test-helper')
 chai = require 'chai'
 
 expect = chai.expect
 
-helper = new Helper('../src/headlines.coffee')
+helper = new Helper('../src/headlines.js')
 
 describe 'headlines', ->
   beforeEach ->
@@ -12,16 +13,8 @@ describe 'headlines', ->
   afterEach ->
     @room.destroy()
 
-  it 'responds to hello', ->
-    @room.user.say('alice', '@hubot hello').then =>
+  it 'responds to ping', ->
+    @room.user.say('ping', '@hubot PONG').then =>
       expect(@room.messages).to.eql [
-        ['alice', '@hubot hello']
-        ['hubot', '@alice hello!']
-      ]
-
-  it 'hears orly', ->
-    @room.user.say('bob', 'just wanted to say orly').then =>
-      expect(@room.messages).to.eql [
-        ['bob', 'just wanted to say orly']
-        ['hubot', 'yarly']
+        ['ping', '@hubot PONG']
       ]
