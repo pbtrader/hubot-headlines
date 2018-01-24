@@ -1,17 +1,23 @@
-// Description: Retrieves most recent headlines from the NYTimes
+// Description: 
+//	Hubot script to retrieve most recent article headlines and links from the New York Times
+//
+// Configuration:
+//	HUBOT_NYTIMES_API_KEY - specify the API key for use with NyTimes
+//
+// Commands:
+//	headlines - returns 5 articles from all categories of the NyTimes
+//	headlines [section] - returns 5 articles from a specified section of the NyTimes
+//	headlines help - view help instructions
 
-// Ideas - split out URL into various components - let the user pick section, number
-// store API key separately
 
-// msg.http("http://api.nytimes.com/svc/news/v3/content/all/world/12.json?limit=5&api-key=67a624d7295f49feb2cc0d48b764ce46")
-
-const API_KEY = process.env.HUBOT_NYTAPI
+const API_KEY = process.env.HUBOT_NYTIMES_API_KEY
+const BASE_URL = "http://api.nytimes.com/svc/news/v3/content/all/"
 
 module.exports = function(robot) {
 
 	robot.respond(/headlines/i, function(msg){
 
-		var section = msg.match[1];
+		let section = msg.match[1];
 		if (section == "help") {
 			return helpInstructions(msg);
 		}
@@ -21,12 +27,10 @@ module.exports = function(robot) {
 			section = "all";
 		}
 
-		var API_KEY = "67a624d7295f49feb2cc0d48b764ce46";
-		var baseURL="http://api.nytimes.com/svc/news/v3/content/all/";
-		var hours = 24;
-		var limit = 5;
+		const hours = 24;		// number of hours to look back
+		const limit = 5;		// number of articles to return
 
-		var URL = makeURL(baseURL,section,hours,limit,API_KEY);
+		var URL = makeURL(BASE_URL,section,hours,limit,API_KEY);
 
 		nyTimesAPICall(URL,msg);
 		
@@ -40,43 +44,43 @@ function makeURL(base,section,hours,limit,API_KEY) {
 }
 
 function nyTimesAPICall(URL,msg) {
-			msg.http(URL).get()(function(error,response,body) {
+	msg.http(URL).get()(function(error,response,body) {
 			
-			data = JSON.parse(body);
-			articleData = data.results;
-			status = data.status;
-			if (status == "ERROR") {
-				return msg.send ("Error. Try hubot headlines help for help");
-			}
+	data = JSON.parse(body);
+	articleData = data.results;
+	status = data.status;
+	if (status == "ERROR") {
+		return msg.send ("Error. Try hubot headlines help for help");
+	}
+	
+	let articles = [];
 
-			var articles = [];
+	for (let i = 0; i < articleData.length; i ++) {
+		let story = articleData[i];
+		articles.push(story);
+	}
 
-			for (var i = 0; i < articleData.length; i ++) {
-				story = articleData[i];
-				articles.push(story);
-			}
+	var newsData = "";
+	for (let i = 0; i < articles.length; i ++) {
+		let story = articles[i];
+		newsData += (story.title) + "\n\t" + JSON.stringify(story.url) + "\n";
+	}
 
-			var newsData = "";
-			for (var i = 0; i < articles.length; i ++) {
-				var story = articles[i];
-				newsData += (story.title) + "\t\t" + JSON.stringify(story.url) + "\n";
-			}
-
-			return msg.send(newsData);
-		});
+	return msg.send(newsData);
+});
 
 }
 
 function helpInstructions(msg) {
 	var helpString = "";
-		helpString += "The headlines hubot retrieves the 5 most recent headlines from the New York Times. \n";
+	helpString += "The headlines hubot retrieves the 5 most recent headlines from the New York Times. \n";
 
-		helpString += "\t For all categories, type 'hubot headlines'. \n";
-		helpString += "\t To get headlines for a particular section, enter 'hubot headlines section'. \n";
-		helpString += "\t Allowed sections are u.s., world, business, arts, sports, politics, tech, opinion, \n";
-		helpString += "\t science, food, travel, and real estate.";
+	helpString += "\t For all categories, type 'hubot headlines'. \n";
+	helpString += "\t To get headlines for a particular section, enter 'hubot headlines section'. \n";
+	helpString += "\t Allowed sections are u.s., world, business, arts, sports, politics, tech, opinion, \n";
+	helpString += "\t science, food, travel, and real estate.";
 
-		return msg.send(helpString);
+	return msg.send(helpString);
 
 };
 
