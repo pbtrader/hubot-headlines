@@ -12,7 +12,9 @@
   "bugs": {
     "url": "https://github.com/hubot-scripts/hubot-headlines/issues"
   },
-  "dependencies": {},
+  "dependencies": {
+    "travis": "^0.1.1"
+  },
   "peerDependencies": {
     "hubot": "2.x"
   },
