@@ -2,7 +2,7 @@
 
 hubot script to pull NYTimes headlines
 
-See [`src/headlines.coffee`](src/headlines.coffee) for full documentation.
+See [`src/headlines.js`](src/headlines.js) for full documentation.
 
 ## Installation
 
