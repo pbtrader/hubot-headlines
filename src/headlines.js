@@ -10,7 +10,7 @@
 //	headlines help - view help instructions
 
 
-const API_KEY = process.env.HUBOT_NYTIMES_API_KEY||null;
+const API_KEY = process.env.HUBOT_NYTIMES_API_KEY||'apiKey';
 const BASE_URL = "http://api.nytimes.com/svc/news/v3/content/all/";
 
 module.exports = function(robot) {
@@ -24,6 +24,9 @@ module.exports = function(robot) {
 		const hours = 24;		// number of hours to look back
 		const limit = 5;		// number of articles to return
 
+		if (API_KEY == 'apiKey') {
+			return msg.send("Invalid API Key");
+		}
 		var URL = makeURL(BASE_URL,section,hours,limit,API_KEY);
 
 		nyTimesAPICall(URL,msg);
@@ -47,6 +50,8 @@ function nyTimesAPICall(URL,msg) {
 	
 		let articles = [];
 
+
+		// build an array of the articles
 		for (let i = 0; i < articleData.length; i ++) {
 			let story = articleData[i];
 			articles.push(story);
