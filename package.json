@@ -7,10 +7,10 @@
   "keywords": "headlines, news, NYTimes",
   "repository": {
     "type": "git",
-    "url": "git://github.com/hubot-scripts/hubot-headlines.git"
+    "url": "https://github.com/pbtrader/hubot-headlines.git.git"
   },
   "bugs": {
-    "url": "https://github.com/hubot-scripts/hubot-headlines/issues"
+    "url": "https://github.com/pbtrader/hubot-headlines.git/issues"
   },
   "dependencies": {},
   "peerDependencies": {
