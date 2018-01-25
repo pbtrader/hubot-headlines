@@ -47,12 +47,8 @@ function nyTimesAPICall(URL, msg) {
 			return msg.send ("Error. Try 'hubot headlines help' for help.");
 		}
 
-		// return article titles and URLs
 		let newsData = "";
-
-		const pretext = "Most Recent Headlines";
 		const footer = "Articles provided by the New York Times";
-
 		const footerIconAddress = "http://static01.nytimes.com/packages/images/developer/logos/poweredby_nytimes_30a.png";
 		for (let i = 0; i < articles.length; i ++) {
 			let story = articles[i];
