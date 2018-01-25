@@ -27,7 +27,7 @@ module.exports = function(robot) {
 		if (API_KEY == 'apiKey') {
 			return msg.send("Invalid API Key");
 		}
-		var URL = makeURL(BASE_URL,section,hours,limit,API_KEY);
+		const URL = makeURL(BASE_URL,section,hours,limit,API_KEY);
 
 		nyTimesAPICall(URL,msg);
 	});
@@ -35,7 +35,7 @@ module.exports = function(robot) {
 
 
 function makeURL(base,section,hours,limit,API_KEY) {
-	var URL = base + section + "/" + hours + ".json?limit=" + limit + "&api-key=" + API_KEY;
+	const URL = base + section + "/" + hours + ".json?limit=" + limit + "&api-key=" + API_KEY;
 	return URL;
 }
 
@@ -57,7 +57,10 @@ function nyTimesAPICall(URL,msg) {
 			articles.push(story);
 		}
 
-		var newsData = "";
+		let newsData = "";
+		// using a separate loop to create the return string
+		// this allows for the ability to easily change which JSON data is 
+		// displayed in the future
 		for (let i = 0; i < articles.length; i ++) {
 			let story = articles[i];
 			newsData += (story.title) + "\n\t" + (story.url) + "\n";
@@ -69,7 +72,7 @@ function nyTimesAPICall(URL,msg) {
 function helpInstructions(msg) {
 	var helpString = "";
 	helpString += "The headlines hubot retrieves the 5 most recent headlines from the New York Times. \n";
-	helpString += "\t For all categories, type 'hubot headlines all'. \n";
+	helpString += "\t For all sections, type 'hubot headlines all'. \n";
 	helpString += "\t To get headlines for a particular section, enter 'hubot headlines section'. \n";
 	helpString += "\t Allowed sections are u.s., world, business, arts, sports, politics, tech, opinion, \n";
 	helpString += "\t science, food, travel, theatre, magazine, and real estate.";
