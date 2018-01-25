@@ -62,13 +62,12 @@ function nyTimesAPICall(URL,msg) {
 }
 
 function helpInstructions(msg) {
-	var helpString = "";
-	helpString += "The headlines hubot retrieves the 5 most recent headlines from the New York Times. \n";
-	helpString += "\t For all sections, type 'hubot headlines all'. \n";
-	helpString += "\t To get headlines for a particular section, enter 'hubot headlines section'. \n";
-	helpString += "\t Allowed sections are u.s., world, business, arts, sports, politics, tech, opinion, \n";
-	helpString += "\t science, food, travel, theatre, magazine, and real estate.";
+let helpString = `The headlines hubot retrieves the 5 most recent headlines from the New York Times. 
+	For all sections, type 'hubot headlines all'. 
+	To get headlines for a particular section, enter 'hubot headlines section'. 
+	Allowed sections are u.s., world, business, arts, sports, politics, tech, opinion, 
+	science, food, travel, theatre, magazine, and real estate.`;
 
-	return msg.send(helpString);
+return msg.send(helpString);
 }
 
