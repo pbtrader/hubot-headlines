@@ -46,16 +46,12 @@ function nyTimesAPICall(URL, msg) {
 		if (status === "ERROR") {
 			return msg.send ("Error. Try 'hubot headlines help' for help.");
 		}
-	
 
 		// return article titles and URLs
-
 		let newsData = "";
 
-		let newsArray = [];
 		const pretext = "Most Recent Headlines";
 		const footer = "Articles provided by the New York Times";
-		//newsData +=JSON.stringify("{attachments : [")
 
 		const footerIconAddress = "http://static01.nytimes.com/packages/images/developer/logos/poweredby_nytimes_30a.png";
 		for (let i = 0; i < articles.length; i ++) {
@@ -72,7 +68,6 @@ function nyTimesAPICall(URL, msg) {
 			// add a footer to the last article
 			else {
 				newsData += JSON.stringify({fallback: fallback, title: title, title_link: link, text: abstract, footer: footer, footer_icon: footerIconAddress},null,4);
-
 			}
 		}
 
