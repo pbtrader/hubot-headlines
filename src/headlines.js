@@ -36,8 +36,8 @@ function makeURL(section) {
 	return BASE_URL + section + "/" + hours + ".json?limit=" + limit + "&api-key=" + API_KEY;
 }
 
-function nyTimesAPICall(URL,msg) {
-	msg.http(URL).get()(function(error,response,body) {	
+function nyTimesAPICall(URL, msg) {
+	msg.http(URL).get()(function(error, response, body) {	
 		const data = JSON.parse(body);
 		const articles = data.results;
 		const status = data.status;
@@ -51,23 +51,43 @@ function nyTimesAPICall(URL,msg) {
 		// return article titles and URLs
 
 		let newsData = "";
+
+		let newsArray = [];
+		const pretext = "Most Recent Headlines";
+		const footer = "Articles provided by the New York Times";
+		//newsData +=JSON.stringify("{attachments : [")
+
+		const footerIconAddress = "http://static01.nytimes.com/packages/images/developer/logos/poweredby_nytimes_30a.png";
 		for (let i = 0; i < articles.length; i ++) {
 			let story = articles[i];
-			newsData += (story.title) + "\n\t" + (story.url) + "\n";
+			let title = story.title;
+			let link = story.url;
+			let abstract=story.abstract;
+			let fallback = title;
+
+			if (i < articles.length - 1) {
+				newsData += JSON.stringify({fallback: fallback, title: title, title_link: link, text: abstract},null,4);
+				newsData +=",";
+			}
+			// add a footer to the last article
+			else {
+				newsData += JSON.stringify({fallback: fallback, title: title, title_link: link, text: abstract, footer: footer, footer_icon: footerIconAddress},null,4);
+
+			}
 		}
 
-		// change this to return a slack attachment
-		return msg.send(newsData);
+		//return msg.send(newsData);
+		return  msg.send({ 'attachments' : [newsData] });
 	});
 }
 
 function helpInstructions(msg) {
-let helpString = `The headlines hubot retrieves the 5 most recent headlines from the New York Times. 
+	let helpString = `The headlines hubot retrieves the 5 most recent headlines from the New York Times. 
 	For all sections, type 'hubot headlines all'. 
 	To get headlines for a particular section, enter 'hubot headlines section'. 
 	Allowed sections are u.s., world, business, arts, sports, politics, tech, opinion, 
 	science, food, travel, theatre, magazine, and real estate.`;
 
-return msg.send(helpString);
+	return msg.send(helpString);
 }
 
