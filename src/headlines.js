@@ -26,7 +26,7 @@ module.exports = function(robot) {
 		}
 		const URL = makeURL(section);
 
-		nyTimesAPICall(URL,msg);
+		nyTimesAPICall(URL, msg);
 	});
 }
 
@@ -58,7 +58,7 @@ function nyTimesAPICall(URL, msg) {
 			let story = articles[i];
 			let title = story.title;
 			let link = story.url;
-			let abstract=story.abstract;
+			let abstract = story.abstract;
 			let fallback = title;
 
 			if (i < articles.length - 1) {
