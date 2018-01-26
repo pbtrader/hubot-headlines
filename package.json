@@ -1,7 +1,7 @@
 {
   "name": "hubot-headlines",
   "description": "hubot script to pull NYTimes headlines",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "author": "Jacob Frieling <jfrieling@akitabox.com>",
   "license": "MIT",
   "keywords": "headlines, news, NYTimes",
