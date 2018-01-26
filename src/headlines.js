@@ -47,7 +47,8 @@ function nyTimesAPICall(URL, msg) {
 			return msg.send ("Error. Try 'hubot headlines help' for help.");
 		}
 
-		let newsData = "";
+		// let newsData = "";
+		let newsArray = [];
 		const footer = "Articles provided by the New York Times";
 		const footerIconAddress = "http://static01.nytimes.com/packages/images/developer/logos/poweredby_nytimes_30a.png";
 		for (let i = 0; i < articles.length; i ++) {
@@ -58,24 +59,27 @@ function nyTimesAPICall(URL, msg) {
 			let fallback = title;
 
 			if (i < articles.length - 1) {
-				newsData += JSON.stringify({fallback: fallback, title: title, title_link: link, text: abstract},null,4);
-				newsData +=",";
+				newsArray.push({fallback: fallback, title: title, title_link: link, text: abstract},null,4);
+				// newsData += JSON.stringify({fallback: fallback, title: title, title_link: link, text: abstract},null,4);
+				// newsData +=",";
 			}
 			// add a footer to the last article
 			else {
-				newsData += JSON.stringify({fallback: fallback, title: title, title_link: link, text: abstract, footer: footer, footer_icon: footerIconAddress},null,4);
+				newsArray.push({fallback: fallback, title: title, title_link: link, text: abstract, footer: footer, footer_icon: footerIconAddress},null,4);
+				//newsData += JSON.stringify([{fallback: fallback, title: title, title_link: link, text: abstract, footer: footer, footer_icon: footerIconAddress}],null,4);
 			}
 		}
 
-		//return msg.send(newsData);
-		return  msg.send({ 'attachments' : [newsData] });
+
+		// return msg.send(JSON.stringify(newsArray));
+		return msg.send({ 'attachments' : JSON.stringify(newsArray) });
 	});
 }
 
 function helpInstructions(msg) {
-	let helpString = `The headlines hubot retrieves the 5 most recent headlines from the New York Times. 
-	For all sections, type 'hubot headlines all'. 
-	To get headlines for a particular section, enter 'hubot headlines section'. 
+	let helpString = `The headlines bot retrieves the 5 most recent headlines from the New York Times. 
+	For all sections, type 'headlines all'. 
+	To get headlines for a particular section, enter 'headlines section'. 
 	Allowed sections are u.s., world, business, arts, sports, politics, tech, opinion, 
 	science, food, travel, theatre, magazine, and real estate.`;
 
